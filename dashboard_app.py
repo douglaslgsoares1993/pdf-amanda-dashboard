@@ -20,8 +20,14 @@ st.set_page_config(
 
 # ── Localiza o banco de dados ───────────────────────────────────
 PASTA_SCRIPT = Path(__file__).parent
-BANCO_PATH   = PASTA_SCRIPT / "SAIDA" / "procedimentos.db"
-PESQUISA_DB  = PASTA_SCRIPT / "SAIDA" / "pesquisa_clinica.db"
+# Procura o banco na pasta SAIDA ou na raiz (compatível com Render)
+_banco_saida = PASTA_SCRIPT / "SAIDA" / "procedimentos.db"
+_banco_raiz  = PASTA_SCRIPT / "procedimentos.db"
+BANCO_PATH   = _banco_saida if _banco_saida.exists() else _banco_raiz
+
+_pesq_saida  = PASTA_SCRIPT / "SAIDA" / "pesquisa_clinica.db"
+_pesq_raiz   = PASTA_SCRIPT / "pesquisa_clinica.db"
+PESQUISA_DB  = _pesq_saida if _pesq_saida.exists() else _pesq_raiz
 
 # ── Carrega dados ───────────────────────────────────────────────
 @st.cache_data(ttl=60)
