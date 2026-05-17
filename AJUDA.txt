@@ -1,0 +1,45 @@
+COMO USAR O SISTEMA PDF AMANDA
+================================
+
+PRIMEIRA VEZ:
+  1. Clique duas vezes em INSTALAR.py
+     (ou no terminal: python INSTALAR.py)
+  Aguarde. O sistema instala tudo sozinho.
+
+USO DO DIA A DIA:
+  1. Clique duas vezes em INICIAR.bat (Windows)
+     ou execute: python INICIAR.py
+  2. Escolha o que deseja fazer digitando o número.
+
+ADICIONAR NOVOS PDFs:
+  Coloque o arquivo PDF nesta mesma pasta e execute o sistema normalmente.
+  Também é possível escolher a opção 5 para usar outra pasta ou adicionar arquivos.
+
+BUSCAR INFORMAÇÃO:
+  Escolha opção 2 no menu e digite o que procura.
+  Exemplos: artéria femoral, Dr. Carlos, R$ 2.325
+
+SE ALGO DER ERRADO:
+  O arquivo erros.log na pasta SAIDA tem os detalhes técnicos.
+  Mostre esse arquivo para quem te ajudou a instalar.
+
+ARQUIVOS GERADOS:
+  Pasta SAIDA -> relatórios Word, Excel e texto de cada PDF.
+  CONSOLIDADO.xlsx -> resumo de todos os documentos numa planilha.
+
+CONSULTAR BASE DE DADOS (para listas de procedimentos):
+  Quando o sistema detectar uma lista de registros repetidos,
+  ele cria automaticamente uma base de dados consultável.
+  Use a opção [6] do menu para buscar por nome, CPF, médico, etc.
+  O arquivo DADOS_ESTRUTURADOS.xlsx na pasta SAIDA contém
+  todos os registros em planilha organizada com várias abas.
+
+PLANILHA DE PESQUISA (opção 7 do menu):
+  Se você mantém uma planilha com prontuários de pacientes,
+  o sistema pode completar automaticamente os dados de cada um.
+  Você só precisa preencher ID, IMC e Tabagismo.
+
+DASHBOARD VISUAL:
+  Após processar os documentos, o sistema gera DASHBOARD.html
+  na pasta SAIDA. Abra pela opção 3 do menu ou clique duas vezes
+  no arquivo. Funciona em qualquer navegador.

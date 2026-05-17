@@ -1,0 +1,16 @@
+{
+  "tipos_documento": {
+    "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\PDF_AMANDA\\2325 Arteriografia de Membro.pdf": {
+      "tipo": "Relatório Estruturado",
+      "confianca": 1.0
+    },
+    "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\PDF_AMANDA\\2400 Angioplastia Sem Stent.pdf": {
+      "tipo": "Relatório Estruturado",
+      "confianca": 1.0
+    },
+    "C:\\Users\\dougl\\OneDrive\\Área de Trabalho\\PDF_AMANDA\\2497 Aortografia Abdominal.pdf": {
+      "tipo": "Relatório Estruturado",
+      "confianca": 1.0
+    }
+  }
+}

@@ -1,0 +1,17 @@
+pdfplumber
+pymupdf
+pypdf
+python-docx
+openpyxl
+python-dotenv
+requests
+pillow
+pdf2image
+pytesseract
+rapidfuzz
+colorama
+tqdm
+groq
+google-generativeai
+openai
+anthropic

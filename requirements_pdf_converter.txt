@@ -1,0 +1,26 @@
+# PDF CONVERTER - Dependências
+# Instale com: pip install -r requirements_pdf_converter.txt
+
+pdfplumber>=0.11.0
+pypdf>=4.0.0
+pymupdf>=1.27.0
+python-docx>=1.1.0
+pytesseract>=0.3.10
+pdf2image>=1.17.0
+Pillow>=10.0.0
+reportlab>=4.0.0
+
+# NOTAS DE INSTALAÇÃO:
+#
+# pytesseract requer o Tesseract OCR instalado no sistema:
+#   Windows: https://github.com/UB-Mannheim/tesseract/wiki
+#   Baixe o instalador e instale (marque o pacote de idioma "por" para português)
+#   Depois configure o caminho no script se necessário:
+#     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+#
+# pdf2image requer poppler:
+#   Windows: https://github.com/oschwartz10612/poppler-windows/releases
+#   Descompacte e adicione a pasta /bin ao PATH do sistema
+#
+# Para PDFs com texto nativo (como os laudos da Amanda), pdfplumber
+# já funciona sozinho sem Tesseract/poppler.
