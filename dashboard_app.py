@@ -72,26 +72,219 @@ def df_para_excel(df):
 # ── CSS customizado ─────────────────────────────────────────────
 st.markdown("""
 <style>
-[data-testid="stMetricValue"] { font-size: 2rem !important; font-weight: 600; }
-[data-testid="stMetricLabel"] { font-size: 0.85rem !important; color: #555; }
-.ficha-box {
-    background: #f0f7ff;
-    border-left: 4px solid #185FA5;
+/* ── Variáveis de cor ── */
+:root {
+    --navy:   #0A2540;
+    --blue:   #185FA5;
+    --blue2:  #2278C9;
+    --teal:   #1D9E75;
+    --accent: #F0A500;
+    --danger: #D85A30;
+    --bg:     #F4F7FC;
+    --card:   #FFFFFF;
+    --border: #DDE4EE;
+    --text:   #1A2B40;
+    --muted:  #637383;
+}
+
+/* ── Fundo geral ── */
+.stApp { background-color: var(--bg) !important; }
+.main .block-container { padding-top: 1.5rem !important; }
+
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: var(--navy) !important;
+    border-right: 1px solid rgba(255,255,255,0.08) !important;
+}
+[data-testid="stSidebar"] * { color: #E8EFF8 !important; }
+[data-testid="stSidebar"] .stMarkdown h2,
+[data-testid="stSidebar"] .stMarkdown h3 { color: #FFFFFF !important; }
+[data-testid="stSidebar"] .stMultiSelect [data-baseweb="select"] {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(255,255,255,0.18) !important;
+    border-radius: 6px !important;
+}
+[data-testid="stSidebar"] label { color: #A8BEDC !important; font-size: 0.8rem !important; font-weight: 500 !important; text-transform: uppercase !important; letter-spacing: 0.04em !important; }
+[data-testid="stSidebar"] [data-testid="stDateInput"] input { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.18) !important; color: #E8EFF8 !important; }
+[data-testid="stSidebar"] button {
+    background: rgba(24,95,165,0.5) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: #FFFFFF !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+}
+[data-testid="stSidebar"] button:hover { background: var(--blue) !important; }
+[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.1) !important; }
+
+/* ── Sidebar — badge de status ── */
+.sidebar-stat {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sidebar-stat .s-label { font-size: 0.75rem; color: #A8BEDC; }
+.sidebar-stat .s-value { font-size: 0.95rem; font-weight: 700; color: #FFFFFF; }
+
+/* ── Header da página ── */
+.page-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #1A3D6E 100%);
+    border-radius: 12px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(10,37,64,0.15);
+}
+.page-header .h-left { display: flex; align-items: center; gap: 1rem; }
+.page-header .h-icon { font-size: 2.2rem; }
+.page-header .h-title { font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin: 0; line-height: 1.2; }
+.page-header .h-sub   { font-size: 0.8rem; color: #A8BEDC; margin: 0; }
+.page-header .h-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.78rem;
+    color: #D0E4F7;
+    font-weight: 500;
+}
+
+/* ── Cards de métrica ── */
+.metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 8px rgba(10,37,64,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+.metric-card:hover { box-shadow: 0 4px 16px rgba(10,37,64,0.12); }
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent-color, var(--blue));
+    border-radius: 12px 0 0 12px;
+}
+.metric-card .mc-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+    display: block;
+}
+.metric-card .mc-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+    display: block;
+}
+.metric-card .mc-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-top: 0.15rem;
+}
+
+/* ── Abas ── */
+[data-testid="stTabs"] [data-baseweb="tab"] {
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    color: var(--muted) !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 0.6rem 1rem !important;
+}
+[data-testid="stTabs"] [aria-selected="true"] {
+    color: var(--blue) !important;
+    border-bottom: 2px solid var(--blue) !important;
+}
+
+/* ── Títulos de seção ── */
+.section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--blue);
+    display: inline-block;
+}
+
+/* ── Ficha de paciente ── */
+.ficha-box {
+    background: #EBF3FB;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
     padding: 1rem 1.25rem;
     margin-bottom: 1rem;
-    font-family: monospace;
-    font-size: 0.85rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
     white-space: pre-wrap;
+    color: var(--text);
+    line-height: 1.6;
 }
-.badge-d  { background:#E6F1FB; color:#0C447C; padding:2px 8px;
-            border-radius:4px; font-size:12px; font-weight:600; }
-.badge-e  { background:#EAF3DE; color:#27500A; padding:2px 8px;
-            border-radius:4px; font-size:12px; font-weight:600; }
-.badge-na { background:#F1EFE8; color:#444; padding:2px 8px;
-            border-radius:4px; font-size:12px; font-weight:600; }
+
+/* ── Badges ── */
+.badge-d  { background:#E0EEF9; color:#0C447C; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.03em; }
+.badge-e  { background:#E2F4EC; color:#1A6B40; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.03em; }
+.badge-na { background:#F0EDE5; color:#5A4F3A; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.03em; }
+
+/* ── Dataframe ── */
+[data-testid="stDataFrame"] { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+
+/* ── Botão primário ── */
+[data-testid="stButton"] button[kind="primary"] {
+    background: var(--blue) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+[data-testid="stButton"] button[kind="primary"]:hover {
+    background: var(--blue2) !important;
+}
+
+/* ── Botão download ── */
+[data-testid="stDownloadButton"] button {
+    border: 1.5px solid var(--blue) !important;
+    color: var(--blue) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    background: transparent !important;
+}
+[data-testid="stDownloadButton"] button:hover {
+    background: var(--blue) !important;
+    color: #FFFFFF !important;
+}
+
+/* ── Métricas nativas Streamlit (fallback) ── */
+[data-testid="stMetricValue"] { font-size: 1.9rem !important; font-weight: 700 !important; color: var(--text) !important; }
+[data-testid="stMetricLabel"] { font-size: 0.78rem !important; color: var(--muted) !important; font-weight: 500 !important; text-transform: uppercase !important; }
 </style>
 """, unsafe_allow_html=True)
+
+def render_metric_card(icon, value, label, accent_color="#185FA5"):
+    """Renderiza card de métrica estilizado."""
+    st.markdown(f"""
+    <div class="metric-card" style="--accent-color:{accent_color}">
+        <span class="mc-icon">{icon}</span>
+        <span class="mc-value">{value}</span>
+        <span class="mc-label">{label}</span>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ── Carrega dados ───────────────────────────────────────────────
 df_total = carregar_dados()
@@ -99,23 +292,43 @@ banco_ok  = not df_total.empty
 
 # ── Sidebar ─────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🏥 PDF Amanda")
-    st.markdown("**Dashboard de Produção Cirúrgica**")
-    st.markdown("HUPE / UERJ")
+    st.markdown("""
+    <div style="padding:0.5rem 0 1.2rem 0; text-align:center;">
+        <div style="font-size:2.4rem; margin-bottom:0.3rem;">🏥</div>
+        <div style="font-size:1.1rem; font-weight:800; color:#FFFFFF; letter-spacing:0.02em;">PDF Amanda</div>
+        <div style="font-size:0.75rem; color:#A8BEDC; margin-top:0.1rem; font-weight:400;">Dashboard de Produção Cirúrgica</div>
+        <div style="font-size:0.72rem; color:#7A9EC0; margin-top:0.15rem;">HUPE · UERJ</div>
+    </div>
+    """, unsafe_allow_html=True)
     st.divider()
 
     if not banco_ok:
-        st.error("Banco de dados não encontrado.\nProcesse os PDFs primeiro\n(opção 1 do menu).")
+        st.error("Banco não encontrado.\nProcesse os PDFs primeiro\n(opção 1 do menu).")
         st.stop()
 
-    st.markdown(f"**Base:** {len(df_total):,} registros")
+    # Stats rápidos
+    ultima_str = "—"
     if "data_inicio" in df_total.columns:
         ultima = df_total["data_inicio"].max()
         if pd.notna(ultima):
-            st.markdown(f"**Último proc.:** {ultima.strftime('%d/%m/%Y')}")
+            ultima_str = ultima.strftime("%d/%m/%Y")
+    st.markdown(f"""
+    <div class="sidebar-stat">
+        <span class="s-label">📦 Registros</span>
+        <span class="s-value">{len(df_total):,}</span>
+    </div>
+    <div class="sidebar-stat">
+        <span class="s-label">📅 Último proc.</span>
+        <span class="s-value">{ultima_str}</span>
+    </div>
+    """, unsafe_allow_html=True)
     st.divider()
 
-    st.markdown("### Filtros")
+    st.markdown("""
+    <div style="font-size:0.72rem; font-weight:700; color:#A8BEDC; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.75rem;">
+        ⚙️ &nbsp;Filtros
+    </div>
+    """, unsafe_allow_html=True)
 
     # Tipo de procedimento
     tipos = sorted(df_total["tipo_procedimento"].dropna().unique().tolist()) \
@@ -178,6 +391,22 @@ if sel_lat:
 if sel_atend:
     df = df[df["tipo_atendimento"].isin(sel_atend)]
 
+# ── Header da página ────────────────────────────────────────────
+filtros_ativos = sum([bool(sel_tipo), bool(sel_cir), bool(sel_mun), bool(sel_lat), bool(sel_atend)])
+badge_filtro = f"<span class='h-badge'>🔍 {filtros_ativos} filtro(s) ativo(s)</span>" if filtros_ativos else "<span class='h-badge'>Todos os registros</span>"
+st.markdown(f"""
+<div class="page-header">
+    <div class="h-left">
+        <span class="h-icon">🏥</span>
+        <div>
+            <p class="h-title">Dashboard de Produção Cirúrgica</p>
+            <p class="h-sub">HUPE · UERJ &nbsp;·&nbsp; Análise de Procedimentos Vasculares</p>
+        </div>
+    </div>
+    {badge_filtro}
+</div>
+""", unsafe_allow_html=True)
+
 # ── Abas principais ──────────────────────────────────────────────
 aba1, aba2, aba3, aba4, aba5 = st.tabs([
     "📊 Visão Geral",
@@ -200,17 +429,21 @@ with aba1:
         st.warning("Instale plotly para ver os gráficos: pip install plotly")
 
     # Métricas
-    col1, col2, col3, col4 = st.columns(4)
-    total = len(df)
-    unicos = df["cpf"].nunique() if "cpf" in df.columns else 0
-    cirurg = df["cirurgiao"].nunique() if "cirurgiao" in df.columns else 0
+    total   = len(df)
+    unicos  = df["cpf"].nunique() if "cpf" in df.columns else 0
+    cirurg  = df["cirurgiao"].nunique() if "cirurgiao" in df.columns else 0
     dur_med = int(df["duracao_minutos"].mean()) \
               if "duracao_minutos" in df.columns and df["duracao_minutos"].notna().any() else 0
 
-    col1.metric("Total de procedimentos", f"{total:,}")
-    col2.metric("Pacientes únicos (CPF)", f"{unicos:,}")
-    col3.metric("Cirurgiões distintos", str(cirurg))
-    col4.metric("Duração média", f"{dur_med} min")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        render_metric_card("🩺", f"{total:,}", "Procedimentos", "#185FA5")
+    with col2:
+        render_metric_card("👤", f"{unicos:,}", "Pacientes únicos", "#1D9E75")
+    with col3:
+        render_metric_card("👨‍⚕️", str(cirurg), "Cirurgiões distintos", "#534AB7")
+    with col4:
+        render_metric_card("⏱️", f"{dur_med} min", "Duração média", "#F0A500")
 
     if PLOTLY and total > 0:
         st.divider()
@@ -218,79 +451,99 @@ with aba1:
 
         # Barras por tipo
         with c1:
-            st.markdown("##### Procedimentos por tipo")
+            st.markdown('<span class="section-title">Procedimentos por tipo</span>', unsafe_allow_html=True)
             if "tipo_procedimento" in df.columns:
                 ct = df["tipo_procedimento"].value_counts().reset_index()
                 ct.columns = ["Tipo", "Total"]
                 fig = px.bar(ct, x="Tipo", y="Total",
                              color="Tipo",
-                             color_discrete_sequence=["#378ADD","#1D9E75","#D85A30"])
+                             color_discrete_sequence=["#185FA5","#1D9E75","#D85A30","#534AB7"])
                 fig.update_layout(showlegend=False, margin=dict(t=10,b=10),
-                                  height=280)
+                                  height=280, plot_bgcolor="white",
+                                  paper_bgcolor="white",
+                                  font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                fig.update_xaxes(showgrid=False)
+                fig.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
                 st.plotly_chart(fig, use_container_width=True)
 
         # Rosca lateralidade
         with c2:
-            st.markdown("##### Lateralidade")
+            st.markdown('<span class="section-title">Lateralidade</span>', unsafe_allow_html=True)
             if "lateralidade" in df.columns:
                 cl = df["lateralidade"].value_counts().reset_index()
                 cl.columns = ["Lado", "Total"]
-                fig2 = px.pie(cl, names="Lado", values="Total", hole=0.45,
-                              color_discrete_sequence=["#378ADD","#1D9E75","#888780","#D85A30"])
-                fig2.update_layout(margin=dict(t=10,b=10), height=280)
+                fig2 = px.pie(cl, names="Lado", values="Total", hole=0.5,
+                              color_discrete_sequence=["#185FA5","#1D9E75","#534AB7","#D85A30"])
+                fig2.update_layout(margin=dict(t=10,b=10), height=280,
+                                   paper_bgcolor="white",
+                                   font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                fig2.update_traces(textposition="outside", textinfo="percent+label")
                 st.plotly_chart(fig2, use_container_width=True)
 
         # Linha mensal
-        st.markdown("##### Evolução mensal por tipo de procedimento")
+        st.markdown('<span class="section-title">Evolução mensal por tipo de procedimento</span>', unsafe_allow_html=True)
         if "data_inicio" in df.columns and "tipo_procedimento" in df.columns:
             df_m = df.dropna(subset=["data_inicio"]).copy()
             df_m["mes"] = df_m["data_inicio"].dt.to_period("M").astype(str)
             mensal = df_m.groupby(["mes","tipo_procedimento"]).size().reset_index(name="Total")
             fig3 = px.line(mensal, x="mes", y="Total", color="tipo_procedimento",
-                           color_discrete_sequence=["#378ADD","#1D9E75","#D85A30"],
+                           color_discrete_sequence=["#185FA5","#1D9E75","#D85A30","#534AB7"],
                            markers=True)
             fig3.update_layout(margin=dict(t=10,b=40), height=300,
                                xaxis_title="", yaxis_title="Procedimentos",
-                               legend_title="")
-            fig3.update_xaxes(tickangle=45)
+                               legend_title="", plot_bgcolor="white",
+                               paper_bgcolor="white",
+                               font=dict(family="sans-serif", size=12, color="#1A2B40"))
+            fig3.update_xaxes(tickangle=45, showgrid=False)
+            fig3.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
             st.plotly_chart(fig3, use_container_width=True)
 
         c3, c4 = st.columns(2)
 
         # Top cirurgiões
         with c3:
-            st.markdown("##### Top 10 cirurgiões")
+            st.markdown('<span class="section-title">Top 10 cirurgiões</span>', unsafe_allow_html=True)
             if "cirurgiao" in df.columns:
                 top_c = df["cirurgiao"].value_counts().head(10).reset_index()
                 top_c.columns = ["Cirurgião", "Total"]
                 top_c["Nome"] = top_c["Cirurgião"].str.split().str[:2].str.join(" ")
                 fig4 = px.bar(top_c, x="Total", y="Nome", orientation="h",
-                              color_discrete_sequence=["#534AB7"])
+                              color_discrete_sequence=["#185FA5"])
                 fig4.update_layout(showlegend=False, margin=dict(t=10,b=10),
-                                   height=320, yaxis_title="")
+                                   height=320, yaxis_title="",
+                                   plot_bgcolor="white", paper_bgcolor="white",
+                                   font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                fig4.update_xaxes(showgrid=True, gridcolor="#EEF0F4")
+                fig4.update_yaxes(showgrid=False)
                 st.plotly_chart(fig4, use_container_width=True)
 
         # Internação vs ambulatorial
         with c4:
-            st.markdown("##### Tipo de atendimento")
+            st.markdown('<span class="section-title">Tipo de atendimento</span>', unsafe_allow_html=True)
             if "tipo_atendimento" in df.columns:
                 ta = df["tipo_atendimento"].value_counts().reset_index()
                 ta.columns = ["Tipo", "Total"]
-                fig5 = px.pie(ta, names="Tipo", values="Total", hole=0.45,
-                              color_discrete_sequence=["#534AB7","#BA7517"])
-                fig5.update_layout(margin=dict(t=10,b=10), height=320)
+                fig5 = px.pie(ta, names="Tipo", values="Total", hole=0.5,
+                              color_discrete_sequence=["#534AB7","#F0A500"])
+                fig5.update_layout(margin=dict(t=10,b=10), height=320,
+                                   paper_bgcolor="white",
+                                   font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                fig5.update_traces(textposition="outside", textinfo="percent+label")
                 st.plotly_chart(fig5, use_container_width=True)
 
         # Top municípios
-        st.markdown("##### Top 10 municípios de origem")
+        st.markdown('<span class="section-title">Top 10 municípios de origem</span>', unsafe_allow_html=True)
         if "municipio" in df.columns:
             top_m = df["municipio"].value_counts().head(10).reset_index()
             top_m.columns = ["Município", "Total"]
             fig6 = px.bar(top_m, x="Município", y="Total",
-                          color_discrete_sequence=["#185FA5"])
+                          color_discrete_sequence=["#0A2540"])
             fig6.update_layout(showlegend=False, margin=dict(t=10,b=60),
-                               height=300)
-            fig6.update_xaxes(tickangle=35)
+                               height=300, plot_bgcolor="white",
+                               paper_bgcolor="white",
+                               font=dict(family="sans-serif", size=12, color="#1A2B40"))
+            fig6.update_xaxes(tickangle=35, showgrid=False)
+            fig6.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
             st.plotly_chart(fig6, use_container_width=True)
 
 # ════════════════════════════════════════
