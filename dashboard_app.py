@@ -71,8 +71,10 @@ def df_para_excel(df):
 
 # ── CSS + Fonte ─────────────────────────────────────────────────
 st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ── Fonte Inter via @import (dentro do style — sem vazamento) ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 /* ── Fonte global ── */
 *, *::before, *::after, .stApp, .stMarkdown, .stDataFrame,
 [data-testid], [class*="st-"] {
@@ -95,12 +97,14 @@ st.markdown("""
 }
 
 /* ── Esconde elementos Streamlit padrão ── */
-#MainMenu          { visibility: hidden !important; }
-footer             { visibility: hidden !important; }
+#MainMenu                      { visibility: hidden !important; }
+footer                         { visibility: hidden !important; }
 [data-testid="stDecoration"]   { display: none !important; }
 [data-testid="stToolbar"]      { display: none !important; }
 [data-testid="stStatusWidget"] { display: none !important; }
-header             { visibility: hidden !important; }
+/* header ocultado sem gerar espaço em branco */
+[data-testid="stHeader"]       { display: none !important; }
+.stAppHeader                   { display: none !important; }
 
 /* ── Scrollbar fina ── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
