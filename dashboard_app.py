@@ -780,6 +780,8 @@ with aba5:
             key="editor_pesquisa"
         )
 
+        st.info("⚠️ **Atenção:** alterações salvas aqui são temporárias na nuvem (Streamlit Cloud). Para persistência permanente, exporte em Excel e reimporte localmente.", icon="💡")
+
         c1, c2 = st.columns(2)
         with c1:
             if st.button("💾 Salvar alterações", type="primary"):

@@ -1,5 +1,17 @@
 __pycache__/
 *.pyc
 .env
-SAIDA/erros.log
 *.log
+
+# Arquivos de dados locais (processamento PDF)
+*.pdf
+*.docx
+*.txt
+CONSOLIDADO.xlsx
+DADOS_ESTRUTURADOS.xlsx
+PESQUISA_CLINICA.xlsx
+SAIDA/
+config_usuario.json
+
+# Config antiga (substituída por .streamlit/config.toml)
+streamlit_config.toml
