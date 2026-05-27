@@ -69,9 +69,16 @@ def df_para_excel(df):
         df.to_excel(writer, index=False, sheet_name="Dados")
     return buf.getvalue()
 
-# ── CSS customizado ─────────────────────────────────────────────
+# ── CSS + Fonte ─────────────────────────────────────────────────
 st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ── Fonte global ── */
+*, *::before, *::after, .stApp, .stMarkdown, .stDataFrame,
+[data-testid], [class*="st-"] {
+    font-family: 'Inter', sans-serif !important;
+}
+
 /* ── Variáveis de cor ── */
 :root {
     --navy:   #0A2540;
@@ -87,9 +94,23 @@ st.markdown("""
     --muted:  #637383;
 }
 
+/* ── Esconde elementos Streamlit padrão ── */
+#MainMenu          { visibility: hidden !important; }
+footer             { visibility: hidden !important; }
+[data-testid="stDecoration"]   { display: none !important; }
+[data-testid="stToolbar"]      { display: none !important; }
+[data-testid="stStatusWidget"] { display: none !important; }
+header             { visibility: hidden !important; }
+
+/* ── Scrollbar fina ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #C4CDD8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
 /* ── Fundo geral ── */
 .stApp { background-color: var(--bg) !important; }
-.main .block-container { padding-top: 1.5rem !important; }
+.main .block-container { padding-top: 1.5rem !important; max-width: 1200px; }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
@@ -273,6 +294,102 @@ st.markdown("""
 /* ── Métricas nativas Streamlit (fallback) ── */
 [data-testid="stMetricValue"] { font-size: 1.9rem !important; font-weight: 700 !important; color: var(--text) !important; }
 [data-testid="stMetricLabel"] { font-size: 0.78rem !important; color: var(--muted) !important; font-weight: 500 !important; text-transform: uppercase !important; }
+
+/* ── Inputs de texto ── */
+[data-testid="stTextInput"] input {
+    border-radius: 8px !important;
+    border: 1.5px solid var(--border) !important;
+    background: white !important;
+    color: var(--text) !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+[data-testid="stTextInput"] input:focus {
+    border-color: var(--blue) !important;
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.12) !important;
+    outline: none !important;
+}
+[data-testid="stTextInput"] input::placeholder { color: #9EB0C4 !important; }
+
+/* ── Expanders (fichas de paciente) ── */
+[data-testid="stExpander"] {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    margin-bottom: 0.6rem !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 6px rgba(10,37,64,0.05) !important;
+}
+[data-testid="stExpander"]:hover {
+    border-color: var(--blue) !important;
+    box-shadow: 0 2px 12px rgba(24,95,165,0.1) !important;
+}
+[data-testid="stExpander"] summary {
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    font-size: 0.9rem !important;
+    padding: 0.75rem 1rem !important;
+}
+[data-testid="stExpander"] summary:hover { background: #F0F5FB !important; }
+
+/* ── Alertas / info boxes ── */
+[data-testid="stInfo"] {
+    background: #EBF3FB !important;
+    border-left: 4px solid var(--blue) !important;
+    border-radius: 0 8px 8px 0 !important;
+    color: var(--text) !important;
+}
+[data-testid="stWarning"] {
+    background: #FFF8EC !important;
+    border-left: 4px solid var(--accent) !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+[data-testid="stSuccess"] {
+    background: #EAFAF3 !important;
+    border-left: 4px solid var(--teal) !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+[data-testid="stError"] {
+    background: #FDF0EC !important;
+    border-left: 4px solid var(--danger) !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+
+/* ── Chips de filtro ── */
+.filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.chip {
+    background: rgba(24,95,165,0.1);
+    border: 1px solid rgba(24,95,165,0.25);
+    color: var(--blue);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ── Selectbox ── */
+[data-baseweb="select"] {
+    border-radius: 8px !important;
+}
+[data-baseweb="select"] > div {
+    border-radius: 8px !important;
+    border-color: var(--border) !important;
+    background: white !important;
+}
+[data-baseweb="select"] > div:focus-within {
+    border-color: var(--blue) !important;
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.12) !important;
+}
+
+/* ── Divider ── */
+hr { border-color: var(--border) !important; margin: 1rem 0 !important; }
+
+/* ── Caption / rodapé de tabela ── */
+[data-testid="stCaptionContainer"] { color: var(--muted) !important; font-size: 0.78rem !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -407,6 +524,17 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+# Chips de filtros ativos
+chips_html = []
+for label, valores in [
+    ("Tipo", sel_tipo), ("Cirurgião", sel_cir),
+    ("Município", sel_mun), ("Lado", sel_lat), ("Atendimento", sel_atend)
+]:
+    for v in (valores or []):
+        chips_html.append(f'<span class="chip">🏷 {label}: {v}</span>')
+if chips_html:
+    st.markdown(f'<div class="filter-chips">{"".join(chips_html)}</div>', unsafe_allow_html=True)
+
 # ── Abas principais ──────────────────────────────────────────────
 aba1, aba2, aba3, aba4, aba5 = st.tabs([
     "📊 Visão Geral",
@@ -458,10 +586,13 @@ with aba1:
                 fig = px.bar(ct, x="Tipo", y="Total",
                              color="Tipo",
                              color_discrete_sequence=["#185FA5","#1D9E75","#D85A30","#534AB7"])
+                fig.update_traces(hovertemplate="<b>%{x}</b><br>Total: %{y}<extra></extra>")
                 fig.update_layout(showlegend=False, margin=dict(t=10,b=10),
                                   height=280, plot_bgcolor="white",
                                   paper_bgcolor="white",
-                                  font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                                  font=dict(family="Inter, sans-serif", size=12, color="#1A2B40"),
+                                  hoverlabel=dict(bgcolor="white", bordercolor="#DDE4EE",
+                                                  font_size=13, font_family="Inter, sans-serif"))
                 fig.update_xaxes(showgrid=False)
                 fig.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
                 st.plotly_chart(fig, use_container_width=True)
@@ -489,11 +620,16 @@ with aba1:
             fig3 = px.line(mensal, x="mes", y="Total", color="tipo_procedimento",
                            color_discrete_sequence=["#185FA5","#1D9E75","#D85A30","#534AB7"],
                            markers=True)
+            fig3.update_traces(hovertemplate="<b>%{x}</b><br>Procedimentos: %{y}<extra></extra>")
             fig3.update_layout(margin=dict(t=10,b=40), height=300,
                                xaxis_title="", yaxis_title="Procedimentos",
                                legend_title="", plot_bgcolor="white",
                                paper_bgcolor="white",
-                               font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                               font=dict(family="Inter, sans-serif", size=12, color="#1A2B40"),
+                               hoverlabel=dict(bgcolor="white", bordercolor="#DDE4EE",
+                                               font_size=13, font_family="Inter, sans-serif"),
+                               legend=dict(orientation="h", yanchor="bottom", y=1.02,
+                                           xanchor="right", x=1))
             fig3.update_xaxes(tickangle=45, showgrid=False)
             fig3.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
             st.plotly_chart(fig3, use_container_width=True)
@@ -509,10 +645,13 @@ with aba1:
                 top_c["Nome"] = top_c["Cirurgião"].str.split().str[:2].str.join(" ")
                 fig4 = px.bar(top_c, x="Total", y="Nome", orientation="h",
                               color_discrete_sequence=["#185FA5"])
+                fig4.update_traces(hovertemplate="<b>%{y}</b><br>Procedimentos: %{x}<extra></extra>")
                 fig4.update_layout(showlegend=False, margin=dict(t=10,b=10),
                                    height=320, yaxis_title="",
                                    plot_bgcolor="white", paper_bgcolor="white",
-                                   font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                                   font=dict(family="Inter, sans-serif", size=12, color="#1A2B40"),
+                                   hoverlabel=dict(bgcolor="white", bordercolor="#DDE4EE",
+                                                   font_size=13, font_family="Inter, sans-serif"))
                 fig4.update_xaxes(showgrid=True, gridcolor="#EEF0F4")
                 fig4.update_yaxes(showgrid=False)
                 st.plotly_chart(fig4, use_container_width=True)
@@ -538,10 +677,13 @@ with aba1:
             top_m.columns = ["Município", "Total"]
             fig6 = px.bar(top_m, x="Município", y="Total",
                           color_discrete_sequence=["#0A2540"])
+            fig6.update_traces(hovertemplate="<b>%{x}</b><br>Procedimentos: %{y}<extra></extra>")
             fig6.update_layout(showlegend=False, margin=dict(t=10,b=60),
                                height=300, plot_bgcolor="white",
                                paper_bgcolor="white",
-                               font=dict(family="sans-serif", size=12, color="#1A2B40"))
+                               font=dict(family="Inter, sans-serif", size=12, color="#1A2B40"),
+                               hoverlabel=dict(bgcolor="white", bordercolor="#DDE4EE",
+                                               font_size=13, font_family="Inter, sans-serif"))
             fig6.update_xaxes(tickangle=35, showgrid=False)
             fig6.update_yaxes(showgrid=True, gridcolor="#EEF0F4")
             st.plotly_chart(fig6, use_container_width=True)
