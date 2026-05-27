@@ -3,9 +3,11 @@ __pycache__/
 .env
 *.log
 
-# Arquivos de dados locais (processamento PDF)
+# Dados locais (NUNCA subir — contêm dados de pacientes)
 *.pdf
 *.docx
+*.db
+*.sqlite
 *.txt
 CONSOLIDADO.xlsx
 DADOS_ESTRUTURADOS.xlsx
@@ -13,5 +15,31 @@ PESQUISA_CLINICA.xlsx
 SAIDA/
 config_usuario.json
 
-# Config antiga (substituída por .streamlit/config.toml)
+# Pipeline PDF local (não necessário no Streamlit Cloud)
+banco.py
+buscador.py
+config.py
+detector_tipo.py
+extrator.py
+gerenciador_pastas.py
+ia_analise.py
+parser_registros.py
+pdf_converter.py
+pdf_system.py
+relatorios.py
+
+# Arquivos de deploy descontinuados (Render/Heroku)
+render.yaml
+render_setup.py
+Procfile
+iniciar.sh
+INICIAR.bat
+INICIAR.py
+INSTALAR.py
+requirements_pdf_converter.txt
+requirements_render.txt
+DASHBOARD.html
+.devcontainer/
+
+# Config antiga
 streamlit_config.toml
